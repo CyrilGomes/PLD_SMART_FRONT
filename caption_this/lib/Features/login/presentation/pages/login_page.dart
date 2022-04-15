@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:caption_this/Features/login/domain/entities/login_info.dart';
 import 'package:caption_this/Features/password_reset/presentation/pages/password_reset_page.dart';
 import 'package:caption_this/routes/router.gr.dart';
 import 'package:flutter/material.dart';
+import '../../domain/repositories/login_repository.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -35,15 +37,23 @@ class _MyStatefulLoginWidgetState extends State<MyStatefulLoginWidget> {
         child: ListView(
           children: <Widget>[
             Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Testing this shit',
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 30),
-                )),
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(10),
+              child: FutureBuilder(
+                  builder: ((context, AsyncSnapshot<LoginInfo> snapshot) {
+                    if (snapshot.hasData) {
+                      return Text(
+                        snapshot.data!.username + ' ' + snapshot.data!.password,
+                        style: const TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 30),
+                      );
+                    }
+                    return const Text('Loul');
+                  }),
+                  future: LoginRepository().getLogin()),
+            ),
             Container(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(10),
@@ -76,7 +86,9 @@ class _MyStatefulLoginWidgetState extends State<MyStatefulLoginWidget> {
               onPressed: () {
                 context.router.push(const PasswordResetPageRoute());
               },
-              child: const Text('Forgot Password',),
+              child: const Text(
+                'Forgot Password',
+              ),
             ),
             Container(
                 height: 50,
@@ -87,8 +99,7 @@ class _MyStatefulLoginWidgetState extends State<MyStatefulLoginWidget> {
                     print(nameController.text);
                     print(passwordController.text);
                   },
-                )
-            ),
+                )),
             Row(
               children: <Widget>[
                 const Text('No account?'),
