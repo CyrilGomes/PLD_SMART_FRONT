@@ -1,4 +1,7 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:caption_this/routes/router.gr.dart';
 import 'package:flutter/material.dart';
+
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -35,7 +38,7 @@ class _MyStatefulSignUpWidget extends State<MyStatefulSignUpWidget> {
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(10),
                 child: const Text(
-                  'Sign up',
+                  'Home',
                   style: TextStyle(fontSize: 20),
                 )),
             Container(
@@ -86,6 +89,7 @@ class _MyStatefulSignUpWidget extends State<MyStatefulSignUpWidget> {
                 child: ElevatedButton(
                   child: const Text('Sign up'),
                   onPressed: () {
+                    context.router.push(const HomeRoute());
                     //print(nameController.text);
                     //print(passwordController.text);
                   },

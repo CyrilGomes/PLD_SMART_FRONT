@@ -68,7 +68,7 @@ class _MyStatefulLoginWidgetState extends State<MyStatefulLoginWidget> {
             ),
             TextButton(
               onPressed: () {
-                //context.router.push(const PasswordResetPageRoute());
+                context.router.push(const PasswordResetRoute());
               },
               child: const Text(
                 'Forgot Password',
