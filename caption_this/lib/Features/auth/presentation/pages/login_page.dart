@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:caption_this/Features/login/domain/entities/login_info.dart';
+import 'package:caption_this/Features/auth/BloC/bloc/auth_bloc.dart';
+import 'package:caption_this/Features/auth/presentation/pages/sign_up_page.dart';
 import 'package:caption_this/Features/password_reset/presentation/pages/password_reset_page.dart';
 import 'package:caption_this/routes/router.gr.dart';
 import 'package:flutter/material.dart';
-import '../../domain/repositories/login_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../domain/repositories/auth_repository.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -37,24 +39,6 @@ class _MyStatefulLoginWidgetState extends State<MyStatefulLoginWidget> {
         child: ListView(
           children: <Widget>[
             Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(10),
-              child: FutureBuilder(
-                  builder: ((context, AsyncSnapshot<LoginInfo> snapshot) {
-                    if (snapshot.hasData) {
-                      return Text(
-                        snapshot.data!.username + ' ' + snapshot.data!.password,
-                        style: const TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 30),
-                      );
-                    }
-                    return const Text('Loul');
-                  }),
-                  future: LoginRepository().getLogin()),
-            ),
-            Container(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(10),
                 child: const Text(
@@ -67,7 +51,7 @@ class _MyStatefulLoginWidgetState extends State<MyStatefulLoginWidget> {
                 controller: nameController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'User Name',
+                  labelText: 'Email',
                 ),
               ),
             ),
@@ -84,7 +68,7 @@ class _MyStatefulLoginWidgetState extends State<MyStatefulLoginWidget> {
             ),
             TextButton(
               onPressed: () {
-                context.router.push(const PasswordResetPageRoute());
+                //context.router.push(const PasswordResetPageRoute());
               },
               child: const Text(
                 'Forgot Password',
@@ -94,10 +78,34 @@ class _MyStatefulLoginWidgetState extends State<MyStatefulLoginWidget> {
                 height: 50,
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: ElevatedButton(
-                  child: const Text('Login'),
+                  child: BlocConsumer<AuthBloc, AuthState>(
+                    listener: (context, state) {
+                      if (state is AuthError) {
+                        Scaffold.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Connection Error"),
+                          ),
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is AuthLoading) {
+                        return const CircularProgressIndicator();
+                      }
+                      if (state is AuthLoginSuccess) {
+                        return const Text('Logged in!');
+                      }
+                      return const Text('Login');
+                    },
+                  ),
                   onPressed: () {
-                    print(nameController.text);
-                    print(passwordController.text);
+                    BlocProvider.of<AuthBloc>(context).add(
+                      AuthLoginEvent(
+                          username: nameController.text,
+                          password: passwordController.text),
+                    );
+                    //print(nameController.text);
+                    //print(passwordController.text);
                   },
                 )),
             Row(
@@ -110,6 +118,7 @@ class _MyStatefulLoginWidgetState extends State<MyStatefulLoginWidget> {
                   ),
                   onPressed: () {
                     //signup screen
+                    context.router.push(const SignUpRoute());
                   },
                 )
               ],

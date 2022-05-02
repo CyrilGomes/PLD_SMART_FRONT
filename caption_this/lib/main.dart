@@ -1,7 +1,8 @@
+import 'package:caption_this/Features/auth/BloC/bloc/auth_bloc.dart';
 import 'package:caption_this/routes/router.gr.dart';
 import 'package:flutter/material.dart';
-
-import 'Features/login/presentation/pages/login_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'Features/auth/domain/repositories/auth_repository.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,10 +11,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerDelegate: _appRouter.delegate(),
-      routeInformationParser: _appRouter.defaultRouteParser(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthBloc(AuthRepository()),
+        ),
+      ],
+      child: MaterialApp.router(
+        routerDelegate: _appRouter.delegate(),
+        routeInformationParser: _appRouter.defaultRouteParser(),
+      ),
     );
+
     // return MaterialApp(
     //   title: 'CaptionThis',
     //   theme: ThemeData(

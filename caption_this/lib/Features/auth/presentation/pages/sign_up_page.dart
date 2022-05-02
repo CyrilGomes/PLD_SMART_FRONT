@@ -38,12 +38,13 @@ class _MyStatefulSignUpWidget extends State<MyStatefulSignUpWidget> {
                   'Sign up',
                   style: TextStyle(fontSize: 20),
                 )),
-
             TextButton(
               onPressed: () {
                 //forgot password screen
               },
-              child: const Text('Forgot Password',),
+              child: const Text(
+                'Forgot Password',
+              ),
             ),
           ],
         ));
