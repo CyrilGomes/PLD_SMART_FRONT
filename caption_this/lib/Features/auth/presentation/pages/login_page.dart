@@ -45,28 +45,6 @@ class _MyStatefulLoginWidgetState extends State<MyStatefulLoginWidget> {
       padding: const EdgeInsets.all(10),
       child: ListView(
         children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(10),
-            child: TextField(
-              controller: nameController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Email',
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-            child: TextField(
-              obscureText: true,
-              controller: passwordController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Password',
-              ),
-            ),
-          ),
           TextButton(
               onPressed: () {
                 //context.router.push(const PasswordResetRoute());
@@ -98,7 +76,7 @@ class _MyStatefulLoginWidgetState extends State<MyStatefulLoginWidget> {
           ),
           TextButton(
             onPressed: () {
-              //context.router.push(const PasswordResetPageRoute());
+              context.router.push(const PasswordResetRoute());
             },
             child: const Text(
               'Forgot Password',
