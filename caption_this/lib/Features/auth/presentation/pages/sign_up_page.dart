@@ -24,8 +24,10 @@ class MyStatefulSignUpWidget extends StatefulWidget {
 }
 
 class _MyStatefulSignUpWidget extends State<MyStatefulSignUpWidget> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _mailController = TextEditingController();
+  final TextEditingController _confirmPassController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,7 @@ class _MyStatefulSignUpWidget extends State<MyStatefulSignUpWidget> {
           Container(
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextField(
-              controller: nameController,
+              controller: _nameController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Username',
@@ -53,7 +55,7 @@ class _MyStatefulSignUpWidget extends State<MyStatefulSignUpWidget> {
           Container(
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextField(
-              controller: nameController,
+              controller: _mailController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Email',
@@ -64,7 +66,7 @@ class _MyStatefulSignUpWidget extends State<MyStatefulSignUpWidget> {
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextField(
               obscureText: true,
-              controller: passwordController,
+              controller: _passwordController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Password',
@@ -73,13 +75,19 @@ class _MyStatefulSignUpWidget extends State<MyStatefulSignUpWidget> {
           ),
           Container(
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-            child: TextField(
+            child: TextFormField(
               obscureText: true,
-              controller: passwordController,
+              controller: _confirmPassController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Confirm Password',
               ),
+              validator: (val) {
+                if (val == null) return 'Password is required';
+                if (val.isEmpty) return 'Empty';
+                if (val != _passwordController.text) return 'Not Match';
+                return null;
+              },
             ),
           ),
           Container(

@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
     var storage = const FlutterSecureStorage();
     storage.read(key: 'jwt').then((value) {
       if (value != null) {
-        context.router.replace(MainMapRoute());
+        //context.router.replace(MainMapRoute());
       }
     });
     return Scaffold(
