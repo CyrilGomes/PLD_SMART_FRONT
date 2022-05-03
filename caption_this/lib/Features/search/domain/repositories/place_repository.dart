@@ -11,7 +11,7 @@ class PlaceRepository {
 
     //ApiBaseHelper helper = ApiBaseHelper();
 
-    return getJson("caption_this/lib/Features/search/data/datasources/place.json");
+    return getJson("place.json");
 
     // var res = await helper.get("/place");
     // print(res);
