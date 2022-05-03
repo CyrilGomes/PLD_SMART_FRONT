@@ -27,6 +27,8 @@ class MyStatefulSignUpWidget extends StatefulWidget {
 class _MyStatefulSignUpWidget extends State<MyStatefulSignUpWidget> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController mailController = TextEditingController();
+  TextEditingController passwordConfirmController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,7 @@ class _MyStatefulSignUpWidget extends State<MyStatefulSignUpWidget> {
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
-                controller: nameController,
+                controller: mailController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Email',
@@ -76,7 +78,7 @@ class _MyStatefulSignUpWidget extends State<MyStatefulSignUpWidget> {
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
                 obscureText: true,
-                controller: passwordController,
+                controller: passwordConfirmController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Confirm Password',
