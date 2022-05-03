@@ -5,6 +5,7 @@ import 'package:caption_this/Features/password_reset/presentation/pages/password
 import 'package:caption_this/routes/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../domain/repositories/auth_repository.dart';
 
 class LoginPage extends StatelessWidget {
@@ -12,6 +13,12 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var storage = const FlutterSecureStorage();
+    storage.read(key: 'jwt').then((value) {
+      if (value != null) {
+        context.router.replace(MainMapRoute());
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login Page'),
@@ -35,96 +42,98 @@ class _MyStatefulLoginWidgetState extends State<MyStatefulLoginWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(10),
-        child: ListView(
-          children: <Widget>[
-            Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Sign in',
-                  style: TextStyle(fontSize: 20),
-                )),
-            Container(
+      padding: const EdgeInsets.all(10),
+      child: ListView(
+        children: <Widget>[
+          Container(
+              alignment: Alignment.center,
               padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: nameController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Email',
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
-                obscureText: true,
-                controller: passwordController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                //context.router.push(const PasswordResetPageRoute());
-              },
               child: const Text(
-                'Forgot Password',
+                'Sign in',
+                style: TextStyle(fontSize: 20),
+              )),
+          Container(
+            padding: const EdgeInsets.all(10),
+            child: TextField(
+              controller: nameController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Email',
               ),
             ),
-            Container(
-                height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: ElevatedButton(
-                  child: BlocConsumer<AuthBloc, AuthState>(
-                    listener: (context, state) {
-                      if (state is AuthError) {
-                        Scaffold.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Connection Error"),
-                          ),
-                        );
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is AuthLoading) {
-                        return const CircularProgressIndicator();
-                      }
-                      if (state is AuthLoginSuccess) {
-                        return const Text('Logged in!');
-                      }
-                      return const Text('Login');
-                    },
-                  ),
-                  onPressed: () {
-                    BlocProvider.of<AuthBloc>(context).add(
-                      AuthLoginEvent(
-                          username: nameController.text,
-                          password: passwordController.text),
-                    );
-                    //print(nameController.text);
-                    //print(passwordController.text);
-                  },
-                )),
-            Row(
-              children: <Widget>[
-                const Text('No account?'),
-                TextButton(
-                  child: const Text(
-                    'Sign up',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  onPressed: () {
-                    //signup screen
-                    context.router.push(const SignUpRoute());
-                  },
-                )
-              ],
-              mainAxisAlignment: MainAxisAlignment.center,
+          ),
+          Container(
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+            child: TextField(
+              obscureText: true,
+              controller: passwordController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Password',
+              ),
             ),
-          ],
-        ));
+          ),
+          TextButton(
+            onPressed: () {
+              //context.router.push(const PasswordResetPageRoute());
+            },
+            child: const Text(
+              'Forgot Password',
+            ),
+          ),
+          Container(
+              height: 50,
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: ElevatedButton(
+                child: BlocConsumer<AuthBloc, AuthState>(
+                  listener: (context, state) {
+                    if (state is AuthError) {
+                      Scaffold.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Connection Error"),
+                        ),
+                      );
+                    }
+                    if (state is AuthLoginSuccess) {
+                      context.router.push(MainMapRoute());
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is AuthLoading) {
+                      return const CircularProgressIndicator();
+                    }
+
+                    return const Text('Login');
+                  },
+                ),
+                onPressed: () {
+                  BlocProvider.of<AuthBloc>(context).add(
+                    AuthLoginEvent(
+                        username: nameController.text,
+                        password: passwordController.text),
+                  );
+                  //print(nameController.text);
+                  //print(passwordController.text);
+                },
+              )),
+          Row(
+            children: <Widget>[
+              const Text('No account?'),
+              TextButton(
+                child: const Text(
+                  'Sign up',
+                  style: TextStyle(fontSize: 20),
+                ),
+                onPressed: () {
+                  //signup screen
+                  context.router.push(const SignUpRoute());
+                },
+              )
+            ],
+            mainAxisAlignment: MainAxisAlignment.center,
+          ),
+        ],
+      ),
+    );
   }
 }
