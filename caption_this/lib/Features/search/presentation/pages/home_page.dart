@@ -1,3 +1,6 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:caption_this/Features/main_map/presentation/main_map_page.dart';
+import 'package:caption_this/routes/router.gr.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -12,8 +15,7 @@ class HomePage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('This should be a sliding menu')));
+            context.router.push(MainMapRoute());
             },
           ),
         ],
