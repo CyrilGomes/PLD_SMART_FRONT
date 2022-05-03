@@ -118,7 +118,8 @@ class _MyStatefulLoginWidgetState extends State<MyStatefulLoginWidget> {
                       );
                     }
                     if (state is AuthLoginSuccess) {
-                      context.router.push(MainMapRoute());
+                      //context.router.push(MainMapRoute());
+                      context.router.push(const HomeRoute());
                     }
                   },
                   builder: (context, state) {

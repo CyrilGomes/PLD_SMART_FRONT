@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'dart:async';
 
 class ApiBaseHelper {
-  final String _baseUrl = "http://192.168.13.83:80";
+  final String _baseUrl = "http://192.168.56.1:10000";
   Future<dynamic> get(String url) async {
     print('Api Get, url $url');
     var responseJson;
