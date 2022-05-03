@@ -31,6 +31,7 @@ class AuthRepository {
       "password": password,
     });
 
+    if (res == null) throw Exception("Signup failed");
     return res != null;
   }
 }

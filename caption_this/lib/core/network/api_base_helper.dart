@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'dart:async';
 
 class ApiBaseHelper {
-  final String _baseUrl = "http://192.168.13.83:80";
+  final String _baseUrl = "https://smaaaaaaaart.herokuapp.com";
   Future<dynamic> get(String url) async {
     print('Api Get, url $url');
     var responseJson;
@@ -27,7 +27,10 @@ class ApiBaseHelper {
         body: jsonEncode(body),
         headers: {HttpHeaders.contentTypeHeader: 'application/json'});
 
-    if (res.statusCode == 200) return jsonDecode(res.body);
+    print(jsonDecode(res.body));
+    if (res.statusCode == 200) {
+      return jsonDecode(res.body);
+    }
     return null;
   }
 

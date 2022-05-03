@@ -114,16 +114,33 @@ class _MyStatefulSignUpWidget extends State<MyStatefulSignUpWidget> {
                 height: 50,
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: ElevatedButton(
-                  child: const Text('Sign up'),
+                  child: BlocConsumer<AuthBloc, AuthState>(
+                    listener: (context, state) {
+                      if (state is AuthRegisterSuccess) {
+                        context.router.pop();
+                      }
+                      if (state is AuthError) {
+                        Scaffold.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(state.message),
+                          ),
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      return const Text('Sign up');
+                    },
+                  ),
                   onPressed: () {
                     var validated = _form.currentState!.validate();
                     if (validated) {
-                      context.read<AuthBloc>().add(AuthRegisterEvent(
-                            email: _mailController.text,
-                            username: _nameController.text,
-                            password: _passwordController.text,
-                          ));
-                      context.router.push(const HomeRoute());
+                      BlocProvider.of<AuthBloc>(context).add(
+                        AuthRegisterEvent(
+                          email: _mailController.text,
+                          username: _nameController.text,
+                          password: _passwordController.text,
+                        ),
+                      );
                     }
                     //context.router.push(const HomeRoute());
                     //print(nameController.text);

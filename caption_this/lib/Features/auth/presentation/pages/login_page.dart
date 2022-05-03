@@ -98,6 +98,14 @@ class _MyStatefulLoginWidgetState extends State<MyStatefulLoginWidget> {
                     if (state is AuthLoginSuccess) {
                       context.router.push(MainMapRoute());
                     }
+                    if (state is AuthRegisterSuccess) {
+                      Scaffold.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("BEBOOO"),
+                        ),
+                      );
+                      context.router.pop();
+                    }
                   },
                   builder: (context, state) {
                     if (state is AuthLoading) {
