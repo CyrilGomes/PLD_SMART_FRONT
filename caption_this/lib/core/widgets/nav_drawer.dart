@@ -31,16 +31,22 @@ class NavDrawer extends StatelessWidget {
             leading: const Icon(Icons.group),
             title: const Text('My Groups'),
             onTap: () => {},
+            textColor: Colors.black26,
+            iconColor: Colors.black26,
           ),
           ListTile(
             leading: const Icon(Icons.account_box_rounded),
             title: const Text('My Account'),
             onTap: () => {},
+            textColor: Colors.black26,
+            iconColor: Colors.black26,
           ),
           ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Settings'),
             onTap: () => {},
+            textColor: Colors.black26,
+            iconColor: Colors.black26,
           ),
           ListTile(
             leading: const Icon(Icons.logout),
