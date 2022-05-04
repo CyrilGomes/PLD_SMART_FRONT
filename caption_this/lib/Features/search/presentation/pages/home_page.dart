@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:caption_this/Features/main_map/presentation/main_map_page.dart';
-import 'package:caption_this/routes/router.gr.dart';
 import 'package:flutter/material.dart';
+
+import 'package:caption_this/routes/router.gr.dart';
+import "package:caption_this/core/widgets/nav_drawer.dart";
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -9,16 +11,17 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const NavDrawer(),
       appBar: AppBar(
-        title: Text('home Page'),
-        /*actions: <Widget>[
+        title: const Text('Home Page'),
+        actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(Icons.map),
             onPressed: () {
               context.router.push(MainMapRoute());
             },
           ),
-        ],*/
+        ],
       ),
       body: MainMapPage(),
     );
@@ -46,7 +49,7 @@ class _MyStatefulHomeWidgetState extends State<MyStatefulHomeWidget> {
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(10),
                 child: const Text(
-                  'wlcm home',
+                  'welcome home',
                   style: TextStyle(
                       color: Colors.blue,
                       fontWeight: FontWeight.w500,
