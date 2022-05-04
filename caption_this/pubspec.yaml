@@ -37,6 +37,7 @@ dependencies:
   flutter_map: ^0.14.0
   location: ^4.3.0
   flutter_map_location_marker: any
+  flutter_svg: ^1.0.3
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +72,8 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
+  assets:
+    - res/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

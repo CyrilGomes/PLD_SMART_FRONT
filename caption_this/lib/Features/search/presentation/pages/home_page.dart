@@ -11,16 +11,16 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('home Page'),
-        actions: <Widget>[
+        /*actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-            context.router.push(MainMapRoute());
+              context.router.push(MainMapRoute());
             },
           ),
-        ],
+        ],*/
       ),
-      body: const MyStatefulHomeWidget(),
+      body: MainMapPage(),
     );
   }
 }
@@ -52,7 +52,6 @@ class _MyStatefulHomeWidgetState extends State<MyStatefulHomeWidget> {
                       fontWeight: FontWeight.w500,
                       fontSize: 30),
                 )),
-
           ],
         ));
   }
