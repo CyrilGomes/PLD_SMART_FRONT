@@ -1,4 +1,3 @@
-//TO DO: implement the loginInfo class
 class LoginInfo {
   String username = "";
   String password = "";
