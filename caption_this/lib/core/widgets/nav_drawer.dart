@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:caption_this/routes/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -52,9 +53,9 @@ class NavDrawer extends StatelessWidget {
             leading: const Icon(Icons.logout),
             title: const Text('Logout'),
             onTap: () {
-              context.router.popUntilRoot();
               var storage = const FlutterSecureStorage();
               storage.delete(key: "jwt");
+              context.router.replaceAll([LoginRoute()]);
             },
           ),
         ],

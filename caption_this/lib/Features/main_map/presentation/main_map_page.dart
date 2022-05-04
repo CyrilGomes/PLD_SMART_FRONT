@@ -109,7 +109,7 @@ class _MainMapPageState extends State<MainMapPage> {
                         (place) => Marker(
                           width: 90,
                           height: 90,
-                          anchorPos: AnchorPos.align(AnchorAlign.center),
+                          anchorPos: AnchorPos.align(AnchorAlign.top),
                           point: latLng.LatLng(place.latitude, place.longitude),
                           builder: (context) => InkWell(
                             onTap: () {
