@@ -2,6 +2,7 @@ import 'package:caption_this/Features/auth/BloC/bloc/auth_bloc.dart';
 import 'package:caption_this/routes/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'Features/auth/domain/repositories/auth_repository.dart';
 
 void main() => runApp(MyApp());
