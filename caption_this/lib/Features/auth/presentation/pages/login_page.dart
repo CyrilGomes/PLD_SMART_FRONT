@@ -76,7 +76,7 @@ class _MyStatefulLoginWidgetState extends State<MyStatefulLoginWidget> {
           ),
           TextButton(
             onPressed: () {
-              context.router.push(const PasswordResetRoute());
+              //context.router.push(const PasswordResetPageRoute());
             },
             child: const Text(
               'Forgot Password',
@@ -89,23 +89,15 @@ class _MyStatefulLoginWidgetState extends State<MyStatefulLoginWidget> {
                 child: BlocConsumer<AuthBloc, AuthState>(
                   listener: (context, state) {
                     if (state is AuthError) {
+                      print(state.message);
                       Scaffold.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text("Connection Error"),
+                          content: Text("Login Failed"),
                         ),
                       );
                     }
                     if (state is AuthLoginSuccess) {
-                      //context.router.push(MainMapRoute());
-                      context.router.push(const HomeRoute());
-                    }
-                    if (state is AuthRegisterSuccess) {
-                      Scaffold.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("BEBOOO"),
-                        ),
-                      );
-                      context.router.pop();
+                      context.router.replace(const HomeRoute());
                     }
                   },
                   builder: (context, state) {

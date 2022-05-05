@@ -6,24 +6,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/src/bloc_builder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/repositories/place_repository.dart';
+import 'package:flutter/material.dart';
+import 'package:caption_this/routes/router.gr.dart';
+import "package:caption_this/core/widgets/nav_drawer.dart";
+
+
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const NavDrawer(),
       appBar: AppBar(
-        title: Text('home Page'),
+        title: const Text('Home Page'),
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(Icons.map),
             onPressed: () {
-            context.router.push(MainMapRoute());
+              context.router.push(MainMapRoute());
             },
           ),
         ],
       ),
-      body: const MyStatefulHomeWidget(),
+      body: MainMapPage(),
     );
   }
 }
@@ -43,16 +49,20 @@ class _MyStatefulHomeWidgetState extends State<MyStatefulHomeWidget> {
     return Padding(
         padding: const EdgeInsets.all(10),
 
-        child: BlocBuilder (
-          bloc:placeBloc,
-          builder: (BuildContext context, PlaceState state){
-
-            return Container();
-          },
-        ),
-
-
-        );
+        child: ListView(
+          children: <Widget>[
+            Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(10),
+                child: const Text(
+                  'welcome home',
+                  style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 30),
+                )),
+          ],
+        ));
   }
 }
 

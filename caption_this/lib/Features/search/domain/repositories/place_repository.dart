@@ -7,7 +7,9 @@ import '../entities/place_info.dart';
 
 class PlaceRepository {
 
-  Future<String> getPlaceInfo(String id) async {
+  Future<String> place(String id, String name, String description,
+      double latitude, double longitude, createdBy) async {
+
     //http request to get place info
 
     //ApiBaseHelper helper = ApiBaseHelper();
@@ -21,4 +23,12 @@ class PlaceRepository {
     // return res != null;
   }
 
+  Future<List<PlaceInfo>> getPlacesResumed() async {
+    ApiBaseHelper helper = ApiBaseHelper();
+    var res = await helper.get("/place/resumed");
+
+    List<PlaceInfo> places =
+        res.map<PlaceInfo>((e) => PlaceInfo.fromJson(e)).toList();
+    return places;
+  }
 }
