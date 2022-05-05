@@ -1,8 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:caption_this/Features/main_map/presentation/main_map_page.dart';
+import 'package:caption_this/Features/search/bloC/bloc/place_bloc.dart';
 import 'package:caption_this/routes/router.gr.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/src/bloc_builder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../domain/repositories/place_repository.dart';
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -33,27 +36,23 @@ class MyStatefulHomeWidget extends StatefulWidget {
 }
 
 class _MyStatefulHomeWidgetState extends State<MyStatefulHomeWidget> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
+  final PlaceRepository placeRepository;
+  final placeBloc= PlaceBloc(placeRepository);
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(10),
-        child: ListView(
-          children: <Widget>[
-            Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'wlcm home',
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 30),
-                )),
 
-          ],
-        ));
+        child: BlocBuilder (
+          bloc:placeBloc,
+          builder: (BuildContext context, PlaceState state){
+
+            return Container();
+          },
+        ),
+
+
+        );
   }
 }
+

@@ -13,14 +13,25 @@ class PlaceInfo {
     description = description;
     latitude=latitude;
     longitude=longitude;
+    createdBy=createdBy;
   }
 
-  PlaceInfo.fromjson(Map<String, dynamic> json) {
+  PlaceInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     description = json['description'];
     latitude=json['latitude'];
     longitude=json['longitude'];
     createdBy=json['created_by'];
+  }
+  Map<String, dynamic> toJson(){
+    return{
+    'id' : id,
+    'name' : name,
+    'description' : description,
+    'latitude':latitude,
+    'longitude':longitude,
+    'createdBy':createdBy,
+    };
   }
 }
