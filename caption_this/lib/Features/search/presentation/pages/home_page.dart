@@ -29,38 +29,84 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: MainMapPage(),
+      body: const PlaceDetailsWidget(),
     );
   }
 }
 
-class MyStatefulHomeWidget extends StatefulWidget {
-  const MyStatefulHomeWidget({Key? key}) : super(key: key);
+class PlaceDetailsWidget extends StatefulWidget {
+  const PlaceDetailsWidget({Key? key}) : super(key: key);
 
   @override
-  State<MyStatefulHomeWidget> createState() => _MyStatefulHomeWidgetState();
+  State<PlaceDetailsWidget> createState() => _PlaceDetailsWidgetState();
 }
 
-class _MyStatefulHomeWidgetState extends State<MyStatefulHomeWidget> {
+class _PlaceDetailsWidgetState extends State<PlaceDetailsWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(10),
 
         child: ListView(
-          children: <Widget>[
-            Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'welcome home',
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 30),
-                )),
-          ],
-        ));
+          children: [
+
+
+
+                  Image.asset(
+                    'res/images/bmc.jpg',
+                    width: 600,
+                    height: 240,
+                    fit: BoxFit.cover,
+                  ),
+                  titleSection,
+                  textSection,
+                ],
+            ),
+        );
   }
 }
+Widget titleSection = Container(
+  padding: const EdgeInsets.all(32),
+  child: Row(
+    children: [
+      Expanded(
+        /*1*/
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            /*2*/
+            Container(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: const Text(
+                'Place Name',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Text(
+              'Created By: ',
+              style: TextStyle(
+                color: Colors.grey[500],
+              ),
+            ),
+          ],
+        ),
+      ),
+      /*3*/
+      Icon(
+        Icons.star,
+        color: Colors.red[500],
+      ),
+      const Text('Number of Likes'),
+    ],
+  ),
+);
 
+Widget textSection = const Padding(
+  padding: EdgeInsets.all(32),
+  child: Text(
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.' ,
+    softWrap: true,
+  ),
+);
