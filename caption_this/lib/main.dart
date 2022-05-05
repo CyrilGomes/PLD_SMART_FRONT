@@ -1,5 +1,6 @@
 import 'package:caption_this/Features/auth/BloC/bloc/auth_bloc.dart';
 import 'package:caption_this/Features/main_map/bloc/place_marker_bloc/bloc/place_marker_bloc.dart';
+import 'package:caption_this/Features/search/bloC/bloc/place_bloc.dart';
 import 'package:caption_this/Features/search/domain/repositories/place_repository.dart';
 import 'package:caption_this/routes/router.gr.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => PlaceMarkerBloc(PlaceRepository()),
         ),
+        BlocProvider(
+          create: (context) => PlaceBloc(PlaceRepository()),
+        )
       ],
       child: MaterialApp.router(
         routerDelegate: _appRouter.delegate(),

@@ -42,8 +42,6 @@ class MyStatefulHomeWidget extends StatefulWidget {
 }
 
 class _MyStatefulHomeWidgetState extends State<MyStatefulHomeWidget> {
-  final PlaceRepository placeRepository;
-  final placeBloc= PlaceBloc(placeRepository);
   @override
   Widget build(BuildContext context) {
     return Padding(

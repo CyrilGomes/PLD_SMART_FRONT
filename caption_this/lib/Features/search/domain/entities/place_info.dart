@@ -31,6 +31,7 @@ class PlaceInfo {
     longitude = json['longitude'];
     createdBy = json['created_by'];
   }
+
 }
 
 

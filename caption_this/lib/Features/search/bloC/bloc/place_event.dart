@@ -14,5 +14,3 @@ class PlaceInfoEvent extends PlaceEvent {
   // final String createdBy;
   PlaceInfoEvent({required this.id});
 }
-
-// required this.description,required this.name, required this.latitude,required this.longitude, required this.createdBy
