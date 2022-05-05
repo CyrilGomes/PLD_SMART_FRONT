@@ -16,7 +16,7 @@ class PlaceMarker extends StatelessWidget {
       svgCode,
       semanticsLabel: 'A red up arrow',
       fit: BoxFit.contain,
-      color: Color.fromARGB(255, 61, 200, 66),
+      color: place.visited ? Colors.green : Colors.grey,
     );
 
     return Stack(

@@ -4,7 +4,6 @@ part of 'place_bloc.dart';
 abstract class PlaceEvent {}
 
 class PlaceInfoEvent extends PlaceEvent {
-
   final String id;
   // final String description; //length=1000
   // final String name;

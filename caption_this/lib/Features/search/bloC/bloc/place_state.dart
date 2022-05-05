@@ -3,8 +3,7 @@ part of 'place_bloc.dart';
 @immutable
 abstract class PlaceState {}
 
-class PlaceInfoInitial extends PlaceState{}
-
+class PlaceInfoInitial extends PlaceState {}
 
 class PlaceInfoLoading extends PlaceState {}
 
@@ -19,4 +18,3 @@ class PlaceInfoLoadedError extends PlaceState {
   final String message;
   PlaceInfoLoadedError({required this.message});
 }
-

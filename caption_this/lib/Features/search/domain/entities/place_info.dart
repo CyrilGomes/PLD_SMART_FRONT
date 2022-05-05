@@ -6,6 +6,7 @@ class PlaceInfo {
   double latitude = 0.0;
   double longitude = 0.0;
   String? createdBy = "4mina";
+  bool visited = false;
 
   PlaceInfo(
       {required int id,
@@ -13,15 +14,19 @@ class PlaceInfo {
       required String description,
       required double latitude,
       required double longitude,
-      required createdBy}) {
+      required createdBy,
+      required visited}) {
     id = id;
     name = name;
     description = description;
-    latitude=latitude;
-    longitude=longitude;
-    createdBy=createdBy;
-
+    latitude = latitude;
+    longitude = longitude;
+    createdBy = createdBy;
+    visited = visited;
   }
+
+  @override
+  bool operator ==(Object other) => other is PlaceInfo && id == other.id;
 
   PlaceInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -30,8 +35,6 @@ class PlaceInfo {
     latitude = json['latitude'];
     longitude = json['longitude'];
     createdBy = json['created_by'];
+    visited = json['visited'] ?? false;
   }
-
 }
-
-

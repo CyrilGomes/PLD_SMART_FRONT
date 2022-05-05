@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:caption_this/Features/search/domain/entities/place_info.dart';
 import 'package:caption_this/Features/search/domain/repositories/place_repository.dart';
@@ -11,6 +13,7 @@ class PlaceMarkerBloc extends Bloc<PlaceMarkerEvent, PlaceMarkerState> {
 
   PlaceMarkerBloc(this._placeRepository) : super(PlaceMarkerInitial()) {
     on<PlaceMarkerEventFetch>(_PlaceMarkerEventFetch);
+    on<PlaceMarkerVisitEvent>(_PlaceMarkerVisitEvent);
   }
 
   _PlaceMarkerEventFetch(
@@ -20,8 +23,18 @@ class PlaceMarkerBloc extends Bloc<PlaceMarkerEvent, PlaceMarkerState> {
       var places = await _placeRepository.getPlacesResumed();
       emit(PlaceMarkerLoaded(places: places));
     } catch (e) {
-      print("Error pLACE MARKER: $e");
       emit(PlaceMarkerError(message: e.toString()));
+    }
+  }
+
+  _PlaceMarkerVisitEvent(
+      PlaceMarkerVisitEvent event, Emitter<PlaceMarkerState> emit) async {
+    emit(PlaceMarkerVisitedLoading());
+    try {
+      var place = await _placeRepository.visitPlace(event.id);
+      emit(PlaceMarkerVisited(place: place));
+    } catch (e) {
+      emit(PlaceMarkerVisitedError(id: event.id));
     }
   }
 }

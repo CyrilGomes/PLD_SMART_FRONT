@@ -1,6 +1,11 @@
 import 'dart:async';
+import 'dart:math';
+import 'dart:ui';
 
 import 'package:caption_this/Features/main_map/bloc/place_marker_bloc/bloc/place_marker_bloc.dart';
+import 'package:caption_this/Features/main_map/presentation/widget/place_marker_details.dart';
+import 'package:caption_this/Features/search/domain/entities/place_info.dart';
+import 'package:caption_this/Features/search/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -17,7 +22,8 @@ class MainMapPage extends StatefulWidget {
   State<MainMapPage> createState() => _MainMapPageState();
 }
 
-class _MainMapPageState extends State<MainMapPage> {
+class _MainMapPageState extends State<MainMapPage>
+    with TickerProviderStateMixin {
   latLng.LatLng _currentPosition = latLng.LatLng(0, 0);
   late CenterOnLocationUpdate _centerOnLocationUpdate;
   late StreamController<double?> _centerCurrentLocationStreamController;
@@ -61,6 +67,87 @@ class _MainMapPageState extends State<MainMapPage> {
     super.initState();
   }
 
+  void _animatedMapMove(latLng.LatLng destLocation, double destZoom) {
+    // Create some tweens. These serve to split up the transition from one location to another.
+    // In our case, we want to split the transition be<tween> our current map center and the destination.
+    final _latTween = Tween<double>(
+        begin: _mapController.center.latitude, end: destLocation.latitude);
+    final _lngTween = Tween<double>(
+        begin: _mapController.center.longitude, end: destLocation.longitude);
+    final _zoomTween = Tween<double>(begin: _mapController.zoom, end: destZoom);
+
+    // Create a animation controller that has a duration and a TickerProvider.
+    var controller = AnimationController(
+        duration: const Duration(milliseconds: 500), vsync: this);
+    // The animation determines what path the animation will take. You can try different Curves values, although I found
+    // fastOutSlowIn to be my favorite.
+    Animation<double> animation =
+        CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+
+    controller.addListener(() {
+      _mapController.move(
+          latLng.LatLng(
+              _latTween.evaluate(animation), _lngTween.evaluate(animation)),
+          _zoomTween.evaluate(animation));
+    });
+
+    animation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        controller.dispose();
+      } else if (status == AnimationStatus.dismissed) {
+        controller.dispose();
+      }
+    });
+
+    controller.forward();
+  }
+
+  void showPopup() {
+    AnimationController controller = AnimationController(
+        duration: const Duration(milliseconds: 400), vsync: this);
+    showDialog(
+      context: context,
+      barrierColor: Colors.transparent,
+      barrierDismissible: true,
+      builder: (_) => PlaceDetailsWidget(
+          //controller: controller,
+          ),
+    );
+  }
+
+  List<PlaceInfo> _places = [];
+  double calculateDistance(lat1, lon1, lat2, lon2) {
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 -
+        c((lat2 - lat1) * p) / 2 +
+        c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+    return 12742 * asin(sqrt(a));
+  }
+
+  void checkNearPlace(MapPosition position) async {
+    //loop over all places and check if they are near the current position
+    for (var place in _places.where((element) => !element.visited)) {
+      if (position.center != null) {
+        var distanceCalculator = latLng.Distance();
+        var distance = distanceCalculator.as(latLng.LengthUnit.Meter,
+            position.center!, latLng.LatLng(place.latitude, place.longitude));
+        print(
+            'Longitude: ${position.center!.longitude} latitude: ${position.center!.latitude} place: ${place.latitude} ${place.longitude} distance: $distance');
+        if (distance < 50 && !place.visited) {
+          //get place marker bloc and update the state
+          BlocProvider.of<PlaceMarkerBloc>(context).add(
+            PlaceMarkerVisitEvent(id: place.id.toString()),
+          );
+          place.visited = true;
+          setState(() {
+            _places = _places;
+          });
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FlutterMap(
@@ -70,6 +157,7 @@ class _MainMapPageState extends State<MainMapPage> {
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 13,
           onPositionChanged: (MapPosition position, bool hasGesture) {
+            checkNearPlace(position);
             if (hasGesture) {
               setState(
                 () => _centerOnLocationUpdate = CenterOnLocationUpdate.never,
@@ -99,39 +187,54 @@ class _MainMapPageState extends State<MainMapPage> {
             centerOnLocationUpdate: _centerOnLocationUpdate,
           ),
         ),
-        BlocBuilder<PlaceMarkerBloc, PlaceMarkerState>(
-          builder: (context, state) {
+        BlocListener<PlaceMarkerBloc, PlaceMarkerState>(
+          listener: (context, state) {
             if (state is PlaceMarkerLoaded) {
-              return MarkerLayerWidget(
-                options: MarkerLayerOptions(
-                  markers: state.places
-                      .map(
-                        (place) => Marker(
-                          width: 90,
-                          height: 90,
-                          anchorPos: AnchorPos.align(AnchorAlign.top),
-                          point: latLng.LatLng(place.latitude, place.longitude),
-                          builder: (context) => InkWell(
-                            onTap: () {
-                              //show snackbar
-                              Scaffold.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(place.name ?? 'Unknown'),
-                                ),
-                              );
-                            },
-                            child: PlaceMarker(
-                              place: place,
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ),
-              );
+              print("loaded markers");
+              setState(() {
+                _places = state.places;
+              });
             }
-            return Container();
+            if (state is PlaceMarkerVisitedError) {
+              _places
+                  .where((element) => element.id.toString() == state.id)
+                  .first
+                  .visited = false;
+              setState(() {
+                _places = _places;
+              });
+            }
           },
+          child: MarkerLayerWidget(
+            options: MarkerLayerOptions(
+              markers: _places
+                  .map(
+                    (place) => Marker(
+                      width: 90,
+                      height: 90,
+                      anchorPos: AnchorPos.align(AnchorAlign.top),
+                      point: latLng.LatLng(place.latitude, place.longitude),
+                      builder: (context) => InkWell(
+                        onTap: () {
+                          _animatedMapMove(
+                              latLng.LatLng(
+                                  place.latitude - 0.0025, place.longitude),
+                              16);
+                          setState(
+                            () => _centerOnLocationUpdate =
+                                CenterOnLocationUpdate.never,
+                          );
+                          showPopup();
+                        },
+                        child: PlaceMarker(
+                          place: place,
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
         ),
       ],
       nonRotatedChildren: [
@@ -140,10 +243,11 @@ class _MainMapPageState extends State<MainMapPage> {
           bottom: 20,
           child: FloatingActionButton(
             onPressed: () {
-              // Automatically center the location marker on the map when location updated until user interact with the map.
               BlocProvider.of<PlaceMarkerBloc>(context).add(
                 PlaceMarkerEventFetch(),
               );
+              // Automatically center the location marker on the map when location updated until user interact with the map.
+
               setState(
                 () => _centerOnLocationUpdate = CenterOnLocationUpdate.always,
               );

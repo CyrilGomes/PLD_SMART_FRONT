@@ -13,6 +13,18 @@ class PlaceMarkerLoaded extends PlaceMarkerState {
   PlaceMarkerLoaded({required this.places});
 }
 
+class PlaceMarkerVisited extends PlaceMarkerState {
+  final int place;
+  PlaceMarkerVisited({required this.place});
+}
+
+class PlaceMarkerVisitedLoading extends PlaceMarkerState {}
+
+class PlaceMarkerVisitedError extends PlaceMarkerState {
+  String id;
+  PlaceMarkerVisitedError({required this.id});
+}
+
 class PlaceMarkerError extends PlaceMarkerState {
   final String message;
 

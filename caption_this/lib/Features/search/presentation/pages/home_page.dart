@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:caption_this/routes/router.gr.dart';
 import "package:caption_this/core/widgets/nav_drawer.dart";
 
-
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -29,7 +28,7 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: const PlaceDetailsWidget(),
+      body: MainMapPage(),
     );
   }
 }
@@ -45,26 +44,23 @@ class _PlaceDetailsWidgetState extends State<PlaceDetailsWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(10),
-
-        child: ListView(
-          children: [
-
-
-
-                  Image.asset(
-                    'res/images/bmc.jpg',
-                    width: 600,
-                    height: 240,
-                    fit: BoxFit.cover,
-                  ),
-                  titleSection,
-                  textSection,
-                ],
-            ),
-        );
+      padding: const EdgeInsets.all(10),
+      child: ListView(
+        children: [
+          Image.asset(
+            'res/images/bmc.jpg',
+            width: 600,
+            height: 240,
+            fit: BoxFit.cover,
+          ),
+          titleSection,
+          textSection,
+        ],
+      ),
+    );
   }
 }
+
 Widget titleSection = Container(
   padding: const EdgeInsets.all(32),
   child: Row(
@@ -106,7 +102,7 @@ Widget titleSection = Container(
 Widget textSection = const Padding(
   padding: EdgeInsets.all(32),
   child: Text(
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.' ,
+    'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
     softWrap: true,
   ),
 );
