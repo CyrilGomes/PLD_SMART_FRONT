@@ -1,4 +1,5 @@
 import 'package:caption_this/Features/search/domain/entities/place_info.dart';
+import 'package:caption_this/comment/comment.dart';
 import 'package:flutter/material.dart';
 
 class CommentsPage extends StatefulWidget {
@@ -10,6 +11,10 @@ class CommentsPage extends StatefulWidget {
 }
 
 class _commentState extends State<CommentsPage> {
+  TextEditingController commentController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
+  List<Map<String, String>> commentsList = [];
   @override
   Widget build(BuildContext context) {
     Widget textSection = Padding(
@@ -83,11 +88,15 @@ class _commentState extends State<CommentsPage> {
               titleSection,
               textSection,
               CommentBox(
-                child: commentChild(filedata),
+                child: commentChild(commentsList),
                 labelText: 'Write a comment...',
                 errorText: 'Comment cannot be blank',
                 withBorder: false,
                 sendButtonMethod: () {
+                  if (formKey == null) {
+                    print("Cest nul");
+                  }
+                  ;
                   if (formKey.currentState!.validate()) {
                     print(commentController.text);
                     setState(() {
@@ -97,7 +106,7 @@ class _commentState extends State<CommentsPage> {
                             'https://lh3.googleusercontent.com/a-/AOh14GjRHcaendrf6gU5fPIVd8GIl1OgblrMMvGUoCBj4g=s400',
                         'message': commentController.text
                       };
-                      filedata.insert(0, value);
+                      commentsList.insert(0, value);
                     });
                     commentController.clear();
                     FocusScope.of(context).unfocus();
