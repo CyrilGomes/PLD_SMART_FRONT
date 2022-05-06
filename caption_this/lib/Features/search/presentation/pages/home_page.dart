@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:caption_this/Features/main_map/bloc/place_marker_bloc/bloc/place_marker_bloc.dart';
 import 'package:caption_this/Features/main_map/presentation/main_map_page.dart';
 import 'package:caption_this/Features/search/bloC/bloc/place_bloc.dart';
 import 'package:caption_this/routes/router.gr.dart';
@@ -21,9 +22,11 @@ class HomePage extends StatelessWidget {
         title: const Text('Home Page'),
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.map),
+            icon: const Icon(Icons.replay_outlined),
             onPressed: () {
-              context.router.push(MainMapRoute());
+              BlocProvider.of<PlaceMarkerBloc>(context).add(
+                PlaceMarkerEventFetch(),
+              );
             },
           ),
         ],

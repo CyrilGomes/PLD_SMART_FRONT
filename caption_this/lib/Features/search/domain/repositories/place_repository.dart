@@ -27,6 +27,25 @@ class PlaceRepository {
     // return res != null;
   }
 
+  Future<PlaceInfo> addPlace(PlaceInfo place) async {
+    //http request to get place info
+
+    ApiBaseHelper helper = ApiBaseHelper();
+    var res = await helper.post("/place", place.toJson());
+    if (res == null) {
+      throw Exception("error adding place info");
+    }
+
+    PlaceInfo placeInfo = PlaceInfo.fromJson(res);
+    return placeInfo;
+
+    // var res = await helper.get("/place/resumed/$id");
+    // print(res);
+    // return res;
+    // if (res == null) throw Exception("error fetching place info");
+    // return res != null;
+  }
+
   Future<List<PlaceInfo>> getPlacesResumed() async {
     ApiBaseHelper helper = ApiBaseHelper();
     var res = await helper.get("/place/resumed");

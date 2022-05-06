@@ -37,4 +37,12 @@ class PlaceInfo {
     createdBy = json['created_by'];
     visited = json['visited'] ?? false;
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'description': description,
+        'latitude': latitude,
+        'longitude': longitude,
+      };
 }

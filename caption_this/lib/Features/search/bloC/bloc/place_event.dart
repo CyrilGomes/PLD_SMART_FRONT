@@ -13,3 +13,8 @@ class PlaceInfoEvent extends PlaceEvent {
   // final String createdBy;
   PlaceInfoEvent({required this.id});
 }
+
+class PlaceInfoAddEvent extends PlaceEvent {
+  final PlaceInfo place;
+  PlaceInfoAddEvent({required this.place});
+}

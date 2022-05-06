@@ -18,3 +18,12 @@ class PlaceInfoLoadedError extends PlaceState {
   final String message;
   PlaceInfoLoadedError({required this.message});
 }
+
+class PlaceInfoAdding extends PlaceState {}
+
+class PlaceInfoAddedSuccess extends PlaceState {}
+
+class PlaceInfoAddedError extends PlaceState {
+  final String message;
+  PlaceInfoAddedError({required this.message});
+}

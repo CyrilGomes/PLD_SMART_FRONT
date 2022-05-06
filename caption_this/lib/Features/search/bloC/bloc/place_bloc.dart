@@ -13,6 +13,7 @@ class PlaceBloc extends Bloc<PlaceEvent, PlaceState> {
 
   PlaceBloc(this._placeRepository) : super(PlaceInfoInitial()) {
     on<PlaceInfoEvent>(_PlaceEvent);
+    on<PlaceInfoAddEvent>(_PlaceAddEvent);
   }
 
   _PlaceEvent(PlaceInfoEvent event, Emitter<PlaceState> emit) async {
@@ -28,6 +29,22 @@ class PlaceBloc extends Bloc<PlaceEvent, PlaceState> {
     } catch (error) {
       print("PlaceInfoEvent: $error");
       emit(PlaceInfoLoadedError(message: error.toString()));
+    }
+  }
+
+  _PlaceAddEvent(PlaceInfoAddEvent event, Emitter<PlaceState> emit) async {
+    emit(PlaceInfoAdding());
+    try {
+      var place = await _placeRepository.addPlace(event.place);
+
+      emit(PlaceInfoAddedSuccess());
+
+      // if (res != null) {
+      //  print it out
+      // }
+    } catch (error) {
+      print("PlaceInfoEvent: $error");
+      emit(PlaceInfoAddedError(message: error.toString()));
     }
   }
 }

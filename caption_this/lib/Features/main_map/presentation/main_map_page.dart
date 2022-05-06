@@ -25,10 +25,15 @@ class MainMapPage extends StatefulWidget {
 
 class _MainMapPageState extends State<MainMapPage>
     with TickerProviderStateMixin {
-  latLng.LatLng _currentPosition = latLng.LatLng(0, 0);
+  late latLng.LatLng _currentPosition;
   late CenterOnLocationUpdate _centerOnLocationUpdate;
   late StreamController<double?> _centerCurrentLocationStreamController;
   late AnchorPos anchorPos;
+
+  final TextEditingController _nameController = TextEditingController();
+
+  final TextEditingController _descriptionController = TextEditingController();
+
   Future<void> checkPermissions() async {
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;
@@ -115,7 +120,6 @@ class _MainMapPageState extends State<MainMapPage>
       builder: (_) => BlocBuilder<PlaceBloc, PlaceState>(
         builder: (context, state) {
           if (state is PlaceInfoLoadedSuccess) {
-            print('BEBOO');
             return PlaceMarkerDetails(
               place: state.place,
               controller: controller,
@@ -160,6 +164,12 @@ class _MainMapPageState extends State<MainMapPage>
     }
   }
 
+  void addPlaceMarker(PlaceInfo place) {
+    setState(() {
+      _places.add(place);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return FlutterMap(
@@ -169,6 +179,7 @@ class _MainMapPageState extends State<MainMapPage>
           interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           zoom: 13,
           onPositionChanged: (MapPosition position, bool hasGesture) {
+            _currentPosition = position.center!;
             checkNearPlace(position);
             if (hasGesture) {
               setState(
@@ -255,11 +266,7 @@ class _MainMapPageState extends State<MainMapPage>
           bottom: 20,
           child: FloatingActionButton(
             onPressed: () {
-              BlocProvider.of<PlaceMarkerBloc>(context).add(
-                PlaceMarkerEventFetch(),
-              );
               // Automatically center the location marker on the map when location updated until user interact with the map.
-
               setState(
                 () => _centerOnLocationUpdate = CenterOnLocationUpdate.always,
               );
@@ -269,6 +276,96 @@ class _MainMapPageState extends State<MainMapPage>
             child: const Icon(
               Icons.my_location,
               color: Colors.white,
+            ),
+          ),
+        ),
+        Positioned(
+          left: 20,
+          bottom: 20,
+          child: FloatingActionButton(
+            onPressed: () {
+              //create a widget with a name input field a description input field and a submit button
+              Widget inputFormWidget = Container(
+                height: 250,
+                width: double.infinity,
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(
+                        labelText: "Name",
+                      ),
+                    ),
+                    TextField(
+                      controller: _descriptionController,
+                      decoration: const InputDecoration(
+                        labelText: "Description",
+                      ),
+                    ),
+                    RaisedButton(
+                      onPressed: () {
+                        PlaceInfo placeInfo = PlaceInfo.fromJson({
+                          "id": 1,
+                          "latitude": _currentPosition.longitude,
+                          "longitude": _currentPosition.latitude,
+                          "name": _nameController.text,
+                          "description": _descriptionController.text,
+                          "visited": false
+                        });
+                        BlocProvider.of<PlaceBloc>(context).add(
+                          PlaceInfoAddEvent(place: placeInfo),
+                        );
+
+                        Navigator.pop(context);
+                      },
+                      child: Text("Submit"),
+                    )
+                  ],
+                ),
+              );
+
+              showDialog(
+                context: context,
+                builder: (context) => Container(
+                  child: AlertDialog(
+                    title: Text("Add a place"),
+                    content: inputFormWidget,
+                  ),
+                ),
+              );
+            },
+            child: BlocConsumer<PlaceBloc, PlaceState>(
+              listener: (context, state) {
+                if (state is PlaceInfoAddedSuccess) {
+                  BlocProvider.of<PlaceMarkerBloc>(context).add(
+                    PlaceMarkerEventFetch(),
+                  );
+                  //show a snackbar to inform the user that the place has been added
+                  Scaffold.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Place added"),
+                    ),
+                  );
+                }
+                if (state is PlaceInfoAddedError) {
+                  //show a snackbar to inform the user that the place has been added
+                  Scaffold.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Error place added"),
+                    ),
+                  );
+                }
+              },
+              builder: (context, state) {
+                if (state is PlaceInfoAdding) {
+                  return const CircularProgressIndicator();
+                }
+                return const Icon(
+                  Icons.add_location,
+                  color: Colors.white,
+                );
+              },
             ),
           ),
         )
