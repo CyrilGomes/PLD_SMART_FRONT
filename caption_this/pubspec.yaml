@@ -30,7 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   auto_route: ^3.2.4
-comment_box: ^0.0.17
+  comment_box: ^0.0.17
   http: ^0.13.4
   flutter_secure_storage: ^5.0.2
   flutter_bloc: ^8.0.1

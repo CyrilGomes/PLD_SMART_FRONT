@@ -1,17 +1,66 @@
-import 'package:comment_box/comment/comment.dart';
+import 'package:caption_this/Features/search/domain/entities/place_info.dart';
 import 'package:flutter/material.dart';
 
-class Comments extends StatefulWidget{
+class CommentsPage extends StatefulWidget {
+  PlaceInfo place;
+
+  CommentsPage({Key? key, required this.place}) : super(key: key);
   @override
   _commentState createState() => _commentState();
 }
 
-class _commentState extends State<Comments> {
+class _commentState extends State<CommentsPage> {
   @override
   Widget build(BuildContext context) {
+    Widget textSection = Padding(
+      padding: EdgeInsets.all(32),
+      child: Text(
+        widget.place.description ?? ' ',
+        softWrap: true,
+      ),
+    );
+
+    Widget titleSection = Container(
+      padding: const EdgeInsets.all(32),
+      child: Row(
+        children: [
+          Expanded(
+            /*1*/
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /*2*/
+                Container(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    widget.place.name ?? 'Unkown',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Text(
+                  'Created By: ${widget.place.createdBy}',
+                  style: TextStyle(
+                    color: Colors.grey[500],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          /*3*/
+          Icon(
+            Icons.star,
+            color: Colors.red[500],
+          ),
+          const Text('3'),
+        ],
+      ),
+    );
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Place Name',
+            title: Text(
+              widget.place.name ?? "None",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -23,8 +72,6 @@ class _commentState extends State<Comments> {
               ),
             ]),
         body: Center(
-
-
           child: ListView(
             children: [
               Image.asset(
@@ -33,15 +80,12 @@ class _commentState extends State<Comments> {
                 height: 240,
                 fit: BoxFit.cover,
               ),
-              const Text(
-                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-                softWrap: true,
-              ),
+              titleSection,
+              textSection,
             ],
           ),
         ));
   }
-
 
   Widget commentChild(data) {
     return ListView(
@@ -61,7 +105,6 @@ class _commentState extends State<Comments> {
                   decoration: new BoxDecoration(
                       color: Colors.blue,
                       borderRadius: new BorderRadius.all(Radius.circular(50))),
-
                 ),
               ),
               title: Text(

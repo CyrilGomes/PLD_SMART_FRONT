@@ -5,7 +5,6 @@ import 'package:caption_this/Features/search/domain/repositories/place_repositor
 import 'package:caption_this/routes/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'Features/auth/domain/repositories/auth_repository.dart';
 
 void main() => runApp(MyApp());

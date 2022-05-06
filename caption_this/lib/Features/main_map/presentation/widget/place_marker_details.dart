@@ -1,7 +1,10 @@
+// ignore_for_file: unnecessary_new
+
 import 'package:auto_route/auto_route.dart';
 import 'package:caption_this/Features/main_map/bloc/place_marker_bloc/bloc/place_marker_bloc.dart';
 import 'package:caption_this/Features/search/bloC/bloc/place_bloc.dart';
 import 'package:caption_this/Features/search/domain/entities/place_info.dart';
+import 'package:caption_this/routes/router.gr.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,7 +64,7 @@ class _PlaceMarkerDetailsState extends State<PlaceMarkerDetails> {
             child: Column(children: [
               Text(
                 '${widget.place.name}',
-                style: TextStyle(height: 2, fontWeight: FontWeight.bold),
+                style: const TextStyle(height: 2, fontWeight: FontWeight.bold),
               ),
               Image.asset(
                 'res/images/bmc.jpg',
@@ -74,13 +77,15 @@ class _PlaceMarkerDetailsState extends State<PlaceMarkerDetails> {
                     .min, // this will take space as minimum as posible(to center)
                 children: <Widget>[
                   new ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.red)),
-                    child: new Text('View Details'),
-                    onPressed: null,
-                  ),
-                  new ElevatedButton(
-                    child: new Text('     Cancel     '),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.red)),
+                      child: const Text('View Details'),
+                      onPressed: () {
+                        context.router.push(CommentsRoute(place: widget.place));
+                      }),
+                  const ElevatedButton(
+                    child: Text('     Cancel     '),
                     onPressed: null,
                   ),
                 ],
