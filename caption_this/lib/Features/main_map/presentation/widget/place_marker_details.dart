@@ -21,7 +21,7 @@ class PlaceMarkerDetails extends StatefulWidget {
 class _PlaceMarkerDetailsState extends State<PlaceMarkerDetails> {
   late Animation<double> opacityAnimation;
   Tween<double> opacityTween = Tween<double>(begin: 0.0, end: 0.9);
-  Tween<double> marginTopTween = Tween<double>(begin: 300, end: 300);
+  Tween<double> marginTopTween = Tween<double>(begin: 500, end: 450);
   late Animation<double> marginTopAnimation;
   late AnimationStatus animationStatus;
   @override
@@ -53,46 +53,38 @@ class _PlaceMarkerDetailsState extends State<PlaceMarkerDetails> {
         },
         child: Material(
           color: Colors.transparent,
-
           child: Container(
             color: Colors.white,
             margin: EdgeInsets.only(
               top: marginTopAnimation.value,
             ),
-            child:
-            Column(
-
-                children: [
-
+            child: Column(children: [
               Text(
-              '${widget.place.name}',
-                style: TextStyle(
-                  height:2,
-                  fontWeight: FontWeight.bold
-                ),
+                '${widget.place.name}',
+                style: TextStyle(height: 2, fontWeight: FontWeight.bold),
               ),
-
               Image.asset(
                 'res/images/bmc.jpg',
                 width: 400,
                 height: 200,
                 fit: BoxFit.contain,
               ),
-             new ButtonBar(
-              mainAxisSize: MainAxisSize.min, // this will take space as minimum as posible(to center)
-              children: <Widget>[
-                new ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.red)),
-                  child: new Text('View Details'),
-                  onPressed:null,
-                ),
-                new ElevatedButton(
-                  child: new Text('     Cancel     '),
-                  onPressed: null,
-                ),
-              ],
-            ),
+              new ButtonBar(
+                mainAxisSize: MainAxisSize
+                    .min, // this will take space as minimum as posible(to center)
+                children: <Widget>[
+                  new ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.red)),
+                    child: new Text('View Details'),
+                    onPressed: null,
+                  ),
+                  new ElevatedButton(
+                    child: new Text('     Cancel     '),
+                    onPressed: null,
+                  ),
+                ],
+              ),
             ]),
           ),
         ),
