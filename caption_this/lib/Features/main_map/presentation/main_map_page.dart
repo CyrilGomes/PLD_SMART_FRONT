@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:caption_this/Features/main_map/bloc/place_marker_bloc/bloc/place_marker_bloc.dart';
 import 'package:caption_this/Features/main_map/presentation/widget/place_marker_details.dart';
+import 'package:caption_this/Features/search/bloC/bloc/place_bloc.dart';
 import 'package:caption_this/Features/search/domain/entities/place_info.dart';
 import 'package:caption_this/Features/search/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
@@ -102,16 +103,27 @@ class _MainMapPageState extends State<MainMapPage>
     controller.forward();
   }
 
-  void showPopup() {
+  void showPopup(PlaceInfo placeInfo) {
     AnimationController controller = AnimationController(
         duration: const Duration(milliseconds: 400), vsync: this);
+    BlocProvider.of<PlaceBloc>(context)
+        .add(PlaceInfoEvent(id: placeInfo.id.toString()));
     showDialog(
       context: context,
       barrierColor: Colors.transparent,
       barrierDismissible: true,
-      builder: (_) => PlaceDetailsWidget(
-          //controller: controller,
-          ),
+      builder: (_) => BlocBuilder<PlaceBloc, PlaceState>(
+        builder: (context, state) {
+          if (state is PlaceInfoLoadedSuccess) {
+            print('BEBOO');
+            return PlaceMarkerDetails(
+              place: state.place,
+              controller: controller,
+            );
+          }
+          return Container();
+        },
+      ),
     );
   }
 
@@ -224,7 +236,7 @@ class _MainMapPageState extends State<MainMapPage>
                             () => _centerOnLocationUpdate =
                                 CenterOnLocationUpdate.never,
                           );
-                          showPopup();
+                          showPopup(place);
                         },
                         child: PlaceMarker(
                           place: place,

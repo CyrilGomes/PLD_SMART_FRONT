@@ -1,7 +1,13 @@
+import 'package:caption_this/Features/main_map/bloc/place_marker_bloc/bloc/place_marker_bloc.dart';
+import 'package:caption_this/Features/search/bloC/bloc/place_bloc.dart';
+import 'package:caption_this/Features/search/domain/entities/place_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PlaceMarkerDetails extends StatefulWidget {
-  const PlaceMarkerDetails({Key? key, required this.controller})
+  final PlaceInfo place;
+  const PlaceMarkerDetails(
+      {Key? key, required this.controller, required this.place})
       : super(key: key);
   final AnimationController controller;
   @override
@@ -44,11 +50,11 @@ class _PlaceMarkerDetailsState extends State<PlaceMarkerDetails> {
         child: Material(
           color: Colors.transparent,
           child: Container(
+            color: Colors.white,
             margin: EdgeInsets.only(
               top: marginTopAnimation.value,
             ),
-            color: Colors.red,
-            child: Text("Container"),
+            child: Column(children: [Text('${widget.place.name}')]),
           ),
         ),
       ),

@@ -17,7 +17,7 @@ class PlaceRepository {
       throw Exception("error fetching place info");
     }
 
-    PlaceInfo placeInfo = PlaceInfo.fromJson(jsonDecode(res));
+    PlaceInfo placeInfo = PlaceInfo.fromJson(res);
     return placeInfo;
 
     // var res = await helper.get("/place/resumed/$id");

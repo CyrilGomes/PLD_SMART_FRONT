@@ -11,22 +11,23 @@ part 'place_state.dart';
 class PlaceBloc extends Bloc<PlaceEvent, PlaceState> {
   final PlaceRepository _placeRepository;
 
-   PlaceBloc(this._placeRepository) : super(PlaceInfoInitial()) {
+  PlaceBloc(this._placeRepository) : super(PlaceInfoInitial()) {
     on<PlaceInfoEvent>(_PlaceEvent);
-
   }
 
   _PlaceEvent(PlaceInfoEvent event, Emitter<PlaceState> emit) async {
     emit(PlaceInfoLoading());
     try {
-      var place= await _placeRepository.place(event.id);
-        emit(PlaceInfoLoadedSuccess(place: place));
+      var place = await _placeRepository.place(event.id);
 
-        // if (res != null) {
-        //  print it out
-        // }
-      } catch(error) {
-        emit(PlaceInfoLoadedError(message: error.toString()));
-      }
+      emit(PlaceInfoLoadedSuccess(place: place));
+
+      // if (res != null) {
+      //  print it out
+      // }
+    } catch (error) {
+      print("PlaceInfoEvent: $error");
+      emit(PlaceInfoLoadedError(message: error.toString()));
     }
   }
+}
