@@ -82,6 +82,36 @@ class _commentState extends State<CommentsPage> {
               ),
               titleSection,
               textSection,
+              CommentBox(
+                child: commentChild(filedata),
+                labelText: 'Write a comment...',
+                errorText: 'Comment cannot be blank',
+                withBorder: false,
+                sendButtonMethod: () {
+                  if (formKey.currentState!.validate()) {
+                    print(commentController.text);
+                    setState(() {
+                      var value = {
+                        'name': 'New User',
+                        'pic':
+                            'https://lh3.googleusercontent.com/a-/AOh14GjRHcaendrf6gU5fPIVd8GIl1OgblrMMvGUoCBj4g=s400',
+                        'message': commentController.text
+                      };
+                      filedata.insert(0, value);
+                    });
+                    commentController.clear();
+                    FocusScope.of(context).unfocus();
+                  } else {
+                    print("Not validated");
+                  }
+                },
+                formKey: formKey,
+                commentController: commentController,
+                backgroundColor: Colors.pink,
+                textColor: Colors.white,
+                sendWidget:
+                    Icon(Icons.send_sharp, size: 30, color: Colors.white),
+              ),
             ],
           ),
         ));
