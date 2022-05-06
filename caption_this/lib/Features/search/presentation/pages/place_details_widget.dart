@@ -8,41 +8,6 @@ class Comments extends StatefulWidget{
 
 class _commentState extends State<Comments> {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            title: const Text('Place Name',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            actions: <Widget>[
-              Icon(
-                Icons.star,
-                color: Colors.red[500],
-              ),
-            ]),
-        body: Center(
-
-
-          child: ListView(
-            children: [
-              Image.asset(
-                'res/images/bmc.jpg',
-                width: 600,
-                height: 240,
-                fit: BoxFit.cover,
-              ),
-              const Text(
-                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-                softWrap: true,
-              ),
-            ],
-          ),
-        ));
-  }
-
-
   Widget commentChild(data) {
     return ListView(
       children: [
@@ -78,4 +43,70 @@ class _commentState extends State<Comments> {
   Widget comments = const Padding(
     padding: EdgeInsets.all(32),
   );
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+          title: const Text('Place Name',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          actions: <Widget>[
+            Icon(
+              Icons.star,
+              color: Colors.red[500],
+            ),
+          ]),
+      body: Center(
+
+
+        child: ListView(
+            children: [
+              Image.asset(
+                'res/images/bmc.jpg',
+                width: 600,
+                height: 240,
+                fit: BoxFit.cover,
+              ),
+              const Text(
+                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+                softWrap: true,
+              ),
+              CommentBox(
+
+                child: commentChild(filedata),
+                labelText: 'Write a comment...',
+                errorText: 'Comment cannot be blank',
+                withBorder: false,
+                sendButtonMethod: () {
+                  if (formKey.currentState!.validate()) {
+                    print(commentController.text);
+                    setState(() {
+                      var value = {
+                        'name': 'New User',
+                        'pic':
+                        'https://lh3.googleusercontent.com/a-/AOh14GjRHcaendrf6gU5fPIVd8GIl1OgblrMMvGUoCBj4g=s400',
+                        'message': commentController.text
+                      };
+                      filedata.insert(0, value);
+                    });
+                    commentController.clear();
+                    FocusScope.of(context).unfocus();
+                  } else {
+                    print("Not validated");
+                  }
+                },
+                formKey: formKey,
+                commentController: commentController,
+                backgroundColor: Colors.pink,
+                textColor: Colors.white,
+                sendWidget: Icon(
+                    Icons.send_sharp, size: 30, color: Colors.white),
+              ),
+            ]
+        ),
+      ),
+    );
+  }
 }
