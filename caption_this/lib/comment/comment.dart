@@ -18,18 +18,18 @@ class CommentBox extends StatelessWidget {
   FocusNode? focusNode;
   CommentBox(
       {this.child,
-        this.header,
-        this.sendButtonMethod,
-        this.formKey,
-        this.commentController,
-        this.sendWidget,
-        this.userImage,
-        this.labelText,
-        this.focusNode,
-        this.errorText,
-        this.withBorder = true,
-        this.backgroundColor,
-        this.textColor});
+      this.header,
+      this.sendButtonMethod,
+      this.formKey,
+      this.commentController,
+      this.sendWidget,
+      this.userImage,
+      this.labelText,
+      this.focusNode,
+      this.errorText,
+      this.withBorder = true,
+      this.backgroundColor,
+      this.textColor});
 
   @override
   Widget build(BuildContext context) {
@@ -64,24 +64,27 @@ class CommentBox extends StatelessWidget {
                 enabledBorder: !withBorder
                     ? InputBorder.none
                     : UnderlineInputBorder(
-                  borderSide: BorderSide(color: textColor!),
-                ),
+                        borderSide: BorderSide(color: textColor!),
+                      ),
                 focusedBorder: !withBorder
                     ? InputBorder.none
                     : UnderlineInputBorder(
-                  borderSide: BorderSide(color: textColor!),
-                ),
+                        borderSide: BorderSide(color: textColor!),
+                      ),
                 border: !withBorder
                     ? InputBorder.none
                     : UnderlineInputBorder(
-                  borderSide: BorderSide(color: textColor!),
-                ),
+                        borderSide: BorderSide(color: textColor!),
+                      ),
                 labelText: labelText,
                 focusColor: textColor,
                 fillColor: textColor,
                 labelStyle: TextStyle(color: textColor),
               ),
-              validator: (value) => value!.isEmpty ? errorText : null,
+              validator: (value) {
+                if (value == null) return null;
+                return (value.isEmpty ? errorText : null);
+              },
             ),
           ),
           trailing: GestureDetector(

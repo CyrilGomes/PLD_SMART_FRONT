@@ -93,7 +93,7 @@ class _commentState extends State<CommentsPage> {
                 errorText: 'Comment cannot be blank',
                 withBorder: false,
                 sendButtonMethod: () {
-                  if (formKey == null) {
+                  if (formKey.currentState == null) {
                     print("Cest nul");
                   }
                   ;
